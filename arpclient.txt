@@ -1,0 +1,29 @@
+import socket
+
+c = socket.socket()
+c.connect(("127.0.0.1", 5000))
+
+while True:
+    print("\n1. ARP\n2. RARP\n3. Exit")
+    ch = input("Enter choice: ")
+
+    if ch == "1":
+        value = input("Enter IP: ")
+        msg = "ARP " + value
+
+    elif ch == "2":
+        value = input("Enter MAC: ")
+        msg = "RARP " + value
+
+    elif ch == "3":
+        c.send("EXIT".encode())
+        break
+
+    else:
+        print("Invalid choice")
+        continue
+
+    c.send(msg.encode())
+    print("Server:", c.recv(1024).decode())
+
+c.close()

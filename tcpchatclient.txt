@@ -1,0 +1,34 @@
+import socket
+
+HOST = "127.0.0.1"
+PORT = 5000
+
+# Create TCP socket
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Connect to server
+client.connect((HOST, PORT))
+
+while True:
+
+    # Send message to server
+    msg = input("Client: ")
+    client.send(msg.encode())
+
+    if msg.lower() == "exit":
+        break
+
+    # Receive reply from server
+    reply = client.recv(1024).decode()
+
+    if not reply:
+        break
+
+    if reply.lower() == "exit":
+        print("Server disconnected.")
+        break
+
+    print("Server:", reply)
+
+# Close socket
+client.close()

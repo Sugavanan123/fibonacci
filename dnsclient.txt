@@ -1,0 +1,27 @@
+import socket
+
+# Create UDP socket
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+# Server address
+addr = ("127.0.0.1", 1234)
+
+c = "Y"
+
+while c.upper() == "Y":
+
+    req_domain = input("Enter domain name for which the IP is needed: ")
+
+    # Send domain name to server
+    s.sendto(req_domain.encode(), addr)
+
+    # Receive IP address
+    data, address = s.recvfrom(1024)
+
+    reply_ip = data.decode()
+
+    print("The IP for the domain name", req_domain, ":", reply_ip)
+
+    c = input("Continue? (y/n): ")
+
+s.close()

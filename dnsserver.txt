@@ -1,0 +1,32 @@
+import socket
+
+# DNS Table
+dns_table = {
+    "www.google.com": "192.165.1.1",
+    "www.youtube.com": "192.165.1.2",
+    "www.python.org": "192.165.1.3",
+    "www.chatgpt.com": "192.165.1.4",
+    "www.amazon.in": "192.165.1.5",
+    "www.gmail.com": "192.165.1.6"
+}
+
+# Create UDP socket
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+print("Starting DNS Server...")
+
+# Bind server
+s.bind(("127.0.0.1", 1234))
+
+while True:
+    data, address = s.recvfrom(1024)
+
+    domain = data.decode()
+
+    print("Client requested the IP address for domain name:", domain)
+
+    # Search DNS table
+    ip = dns_table.get(domain, "Not Found")
+
+    # Send IP address to client
+    s.sendto(ip.encode(), address)

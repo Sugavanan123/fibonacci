@@ -1,0 +1,28 @@
+
+def crc(data, gen):
+    n = len(gen)
+    temp = list(data + '0' * (n - 1))
+
+    for i in range(len(data)):
+        if temp[i] == '1':
+            for j in range(n):
+                temp[i+j] = str(int(temp[i+j]) ^ int(gen[j]))
+
+    return ''.join(temp[-(n-1):])
+
+data = input("Enter data bits: ")
+gen = input("Enter generator bits: ")
+
+rem = crc(data, gen)
+code = data + rem
+
+print("CRC remainder:", rem)
+print("Transmitted codeword:", code)
+
+received = input("Enter received codeword: ")
+check = crc(received, gen)
+
+if int(check, 2) == 0:
+    print("No error detected")
+else:
+    print("Error detected")

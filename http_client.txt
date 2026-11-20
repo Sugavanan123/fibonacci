@@ -1,0 +1,45 @@
+import socket
+
+# Website details
+host = "lms.psgitech.ac.in"
+port = 80
+
+# Create TCP socket
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Connect to web server
+client_socket.connect((host, port))
+
+print("Connected to web server successfully!")
+
+# HTTP GET request
+request = (
+    f"GET / HTTP/1.1\r\n"
+    f"Host: {host}\r\n"
+    "Connection: close\r\n"
+    "\r\n"
+)
+
+# Send request
+client_socket.sendall(request.encode())
+
+# Receive response
+response = b""
+
+while True:
+    data = client_socket.recv(4096)
+
+    if not data:
+        break
+
+    response += data
+
+# Close socket
+client_socket.close()
+
+# Save response to HTML file
+with open("downloaded_page.html", "wb") as file:
+    file.write(response)
+
+print("Web page downloaded successfully!")
+print("Saved as downloaded_page.html")

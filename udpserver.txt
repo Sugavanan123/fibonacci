@@ -1,0 +1,22 @@
+import socket
+
+# Create UDP socket
+server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+# Bind server to IP and port
+server.bind(("127.0.0.1", 12345))
+
+print("UDP Server is running...")
+
+# Receive message from client
+data, addr = server.recvfrom(1024)
+
+print("Received from client:", data.decode())
+
+# Send reply to client
+server.sendto(b"Hello from UDP server!", addr)
+
+print("Reply sent successfully!")
+
+# Close socket
+server.close()
